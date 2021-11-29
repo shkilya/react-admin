@@ -1,9 +1,14 @@
 import React, {FC} from 'react';
 import {Button, Checkbox, Form, Input} from 'antd';
+import {rules} from '../utils/rules';
+import {useDispatch} from 'react-redux';
+import {AuthActionCreator} from '../store/reducers/auth/action-creators';
 
 const LoginForm: FC = () => {
+  const dispatch = useDispatch();
+
   const onFinish = () => {
-    console.log('dsa');
+    dispatch(AuthActionCreator.login('user@user.com', 'password'));
   };
   const onFinishFailed = () => {
     console.log('dsa');
@@ -20,9 +25,12 @@ const LoginForm: FC = () => {
       autoComplete="off"
     >
       <Form.Item
-        label="Username"
-        name="username"
-        rules={[{required: true, message: 'Please input your username!'}]}
+        label="Email"
+        name="email"
+        rules={[
+          rules.required('Email is required'),
+          {type: 'email'},
+        ]}
       >
         <Input/>
       </Form.Item>

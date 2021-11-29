@@ -1,23 +1,27 @@
 import React from 'react';
 import Login from '../pages/Login';
 import Event from '../pages/Event';
-import {RouteList} from './route-list.enum';
-import {RouteObject} from 'react-router';
+import {Navigate} from 'react-router';
 import NotFound from '../pages/NotFound';
+import BlogList from '../pages/Blog/BlogList';
 
-
-export const privateRouteList: RouteObject[] = [
+export const routes = (isAuth: boolean) => [
   {
-    path: RouteList.EVENT_ROUTE,
-    element: <Event/>,
+    path: '/',
+    element: isAuth ? <BlogList/> : <Navigate to="/login"/>,
+    children: [
+      {path: '/event', element: <Event/>},
+      {path: '/blog', element: <BlogList/>},
+      {path: '/', element: <Navigate to="/blog"/>},
+    ],
   },
-  {path: '*', element: <NotFound/>},
-];
-
-export const publicRouteList: RouteObject[] = [
   {
-    path: RouteList.LOGIN_ROUTE,
-    element: <Login/>,
+    path: '/',
+    element: !isAuth ? <Login/> : <Navigate to="/event"/>,
+    children: [
+      {path: 'login', element: <Login/>},
+      {path: '/', element: <Navigate to="/login"/>},
+    ],
   },
   {path: '*', element: <NotFound/>},
 ];

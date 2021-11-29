@@ -1,12 +1,12 @@
 import {FC} from 'react';
 import {useRoutes} from 'react-router';
-import {privateRouteList, publicRouteList} from '../../routes';
 import {useTypesSelector} from '../../hooks/useTypesSelector';
+import {routes} from '../../routes';
 
 const AppRoutes: FC = () => {
   const {isAuth} = useTypesSelector((state) => state.auth);
-
-  return useRoutes(isAuth ? privateRouteList : publicRouteList);
+  const routeList = routes(isAuth);
+  return useRoutes(routeList);
 };
 
 export default AppRoutes;
