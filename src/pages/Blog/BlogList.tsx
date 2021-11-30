@@ -12,7 +12,7 @@ const BlogList: FC = () => {
 
   useEffect(() => {
     dispatch(BlogActionCreator.getAllRequest());
-  });
+  }, []);
 
   if (isLoading) {
     return <>Loading</>;

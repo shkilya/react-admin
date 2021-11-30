@@ -52,6 +52,9 @@ export const AuthActionCreator = {
     dispatch(AuthActionCreator.setIsLoading(false));
   },
   logout: () => async (dispatch: AppDispatch) => {
-    console.log('dsa');
+    localStorage.removeItem('auth');
+    localStorage.removeItem('username');
+    dispatch(AuthActionCreator.setIsAuth(false));
+    dispatch(AuthActionCreator.setUser({} as IUser));
   },
 };

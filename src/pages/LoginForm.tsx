@@ -1,14 +1,22 @@
-import React, {FC} from 'react';
+import React, {ChangeEvent, FC, useState} from 'react';
 import {Button, Checkbox, Form, Input} from 'antd';
 import {rules} from '../utils/rules';
 import {useDispatch} from 'react-redux';
 import {AuthActionCreator} from '../store/reducers/auth/action-creators';
+import {useTypesSelector} from '../hooks/useTypesSelector';
+import {useAction} from '../hooks/useAction';
 
 const LoginForm: FC = () => {
   const dispatch = useDispatch();
 
+  const {error, isLoading} = useTypesSelector((state) => state.auth);
+  const [username, setUsername] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+
+  const {login} = useAction();
+
   const onFinish = () => {
-    dispatch(AuthActionCreator.login('user@user.com', 'password'));
+    dispatch(login(username, password));
   };
   const onFinishFailed = () => {
     console.log('dsa');
@@ -32,7 +40,12 @@ const LoginForm: FC = () => {
           {type: 'email'},
         ]}
       >
-        <Input/>
+        <Input
+          value={username}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setUsername(e.target.value)
+          }
+        />
       </Form.Item>
 
       <Form.Item
@@ -40,7 +53,12 @@ const LoginForm: FC = () => {
         name="password"
         rules={[{required: true, message: 'Please input your password!'}]}
       >
-        <Input.Password/>
+        <Input.Password
+          value={password}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setPassword(e.target.value)
+          }
+        />
       </Form.Item>
       <Form.Item
         name="remember"
@@ -52,7 +70,7 @@ const LoginForm: FC = () => {
 
       <Form.Item wrapperCol={{offset: 8, span: 16}}>
         <Button type="primary" htmlType="submit">
-                    Submit
+            Submit
         </Button>
       </Form.Item>
     </Form>
